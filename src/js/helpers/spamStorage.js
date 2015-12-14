@@ -6,7 +6,7 @@ const KEYS = {
   SPAMS: 'spams'
 };
 
-let spamStorage = {
+let SpamStorage = {
 
   getData(key, defaultVal) {
 
@@ -20,24 +20,52 @@ let spamStorage = {
     });
   },
 
-  setData(data) {
-    console.log('setdata', data);
-    return Q.promise((success, reject) => {
-      Storage.set(data, sucess);
-    });
-  },
-
   list() {
     return this.getData(KEYS.SPAMS, []);
   },
 
   add(newSpam) {
-    return this.list().then(spams => {
-      spams.push(newSpam);
-      return this.setData({SPAMS: spams});
+    return Q.promise((success, reject) => {
+      SpamStorage.list().then(spams => {
+        let newId = spams.length > 0 ? spams[spams.length -1].id + 1: 0;
+        spams.push({
+          id: newId,
+          text: newSpam
+        });
+        Storage.set({[KEYS.SPAMS]: spams}, success);
+      });
+    });
+  },
+
+  remove(idToRemove) {
+    return Q.promise((success, reject) => {
+      SpamStorage.list().then(spams => {
+        spams = spams.filter(({id}) => id !== idToRemove);
+        Storage.set({[KEYS.SPAMS]: spams}, success);
+      });
+    });
+  },
+
+  update(id, newSpam) {
+    return Q.promise((success, reject) => {
+      SpamStorage.list().then(spams => {
+        spams = spams.map(spam => {
+          if (spam.id === id) {
+            spam.text = newSpam;
+          }
+          return spam;
+        });
+        Storage.set({[KEYS.SPAMS]: spams}, success);
+      });
+    });
+  },
+
+  onChange() {
+    return Q.promise((success, reject) => {
+      Storage.onChange(success);
     });
   }
 
 };
 
-export default spamStorage;
+export default SpamStorage;

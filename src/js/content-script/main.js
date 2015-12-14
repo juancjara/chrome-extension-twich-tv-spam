@@ -1,35 +1,54 @@
 console.log('content script ready');
-import SpamStorage from '../helpers/spamStorage';
+import createComponent from '../menu';
 
-var createElement = (tagName, attrs = {}) => {
-  var el= document.createElement(tagName);
-  for (var k in attrs) {
+let createElement = (tagName, attrs = {}) => {
+  let el= document.createElement(tagName);
+  for (let k in attrs) {
     el[k] = attrs[k];
   }
   return el;
 };
 
-var addSpamButton = (chatButtons) => {
-  var spamButtom = createElement('a',
-                                 {className: chatButtons.children[0].className,
-                                  title: 'Let the spam begin',
-                                  innerText: 'Spam'});
+const MENU_ID = 'spamMenu';
 
-  chatButtons.appendChild(spamButtom);
-  SpamStorage.list().then((data) => console.log(data));
-  SpamStorage.add('spamerino')
-    .then(() => {
-      SpamStorage.list().then((data) => console.log(data));
-    });
+let addDropDownMenu = (parentElem) => {
+  let menu = createElement('div',
+                           {
+                             id: MENU_ID,
+                             innerHTML: '<drop-menu></drop-menu>'
+                           });
+  parentElem.appendChild(menu);
 };
 
-var waitChatLoad = setInterval(() => {
-  var chatButtons = document.querySelector('.chat-buttons-container');
+let toggleMenu = () => {
+  let menu = document.getElementById(MENU_ID);
+  let classList = [...menu.classList];
+  classList[classList.length - 1] = classList[classList.length - 1] === 'hidden'?
+                                    'rofl': 'hidden';
+  menu.className = classList.join(' ');
+};
+
+let addSpamButton = (chatButtons) => {
+  return createElement('a',
+                       {className: chatButtons.children[0].className,
+                        title: 'Let the spam begin',
+                        innerText: 'Spam'});
+  //spamButtom.onclick = toggleMenu;
+  // chatButtons.appendChild(spamButtom);
+};
+
+let onDomReady = (chatButtons) => {
+  addDropDownMenu(chatButtons.parentElement);
+  let button = addSpamButton(chatButtons);
+  chatButtons.appendChild(button);
+  createComponent(MENU_ID, button);
+};
+
+let waitChatLoad = setInterval(() => {
+  let chatButtons = document.querySelector('.chat-buttons-container');
   if (chatButtons) {
     clearInterval(waitChatLoad);
-    addSpamButton(chatButtons);
+    onDomReady(chatButtons);
   }
 }, 100);
 
-
-//create button

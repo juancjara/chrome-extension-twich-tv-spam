@@ -1,8 +1,11 @@
 let Storage = {
   property: chrome.storage.local,
 
+  onChange(cb = () => {}) {
+    chrome.storage.onChanged.addListener(cb);
+  },
+
   set(data, cb = () => {}) {
-    console.log('asdf', data);
     Storage.property.set(data, cb);
   },
 

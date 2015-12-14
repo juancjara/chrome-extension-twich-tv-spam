@@ -64,18 +64,23 @@ exports['default'] = Notification;
 module.exports = exports['default'];
 
 },{}],3:[function(require,module,exports){
-'use strict';
+"use strict";
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var Storage = {
   property: chrome.storage.local,
 
+  onChange: function onChange() {
+    var cb = arguments.length <= 0 || arguments[0] === undefined ? function () {} : arguments[0];
+
+    chrome.storage.onChanged.addListener(cb);
+  },
+
   set: function set(data) {
     var cb = arguments.length <= 1 || arguments[1] === undefined ? function () {} : arguments[1];
 
-    console.log('asdf', data);
     Storage.property.set(data, cb);
   },
 
@@ -93,8 +98,8 @@ var Storage = {
 
 };
 
-exports['default'] = Storage;
-module.exports = exports['default'];
+exports["default"] = Storage;
+module.exports = exports["default"];
 
 },{}],4:[function(require,module,exports){
 'use strict';
