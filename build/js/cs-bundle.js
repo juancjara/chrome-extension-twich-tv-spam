@@ -11844,6 +11844,7 @@ var dropMenu = _vue2['default'].extend({
       var height = document.querySelector(heightClass).clientHeight;
       this.styleObject.top = '-' + (Number(height) - 20) + 'px';
       this.classObject.hidden = !this.classObject.hidden;
+      this.syncList();
     }
 
   }

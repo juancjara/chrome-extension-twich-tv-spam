@@ -3,13 +3,14 @@
   "name": "twitch tv spam",
   "description": "twich tv save spam",
   "version": "1.0",
-  "browser_action": {
-    "default_popup": "popup.html"
+  "icons": {
+    "16": "images/kappa16.png"
   },
   "permissions": [
     "storage",
     "notifications",
-    "alarms"
+    "alarms",
+    "contextMenus"
   ],
   "content_scripts": [
     {

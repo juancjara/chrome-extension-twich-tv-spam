@@ -118,6 +118,7 @@ let dropMenu = Vue.extend({
       this.styleObject.top = '-' + (Number(height) - 20)
         + 'px';
       this.classObject.hidden = !this.classObject.hidden;
+      this.syncList();
     }
 
   }
