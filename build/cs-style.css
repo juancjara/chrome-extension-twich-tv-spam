@@ -1,0 +1,85 @@
+.circle {
+  zoom: 0.5;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 4px solid #E91E63;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  position: absolute;
+  top: -30px;
+  right: -40px;
+  cursor: pointer;
+  display: inline-block;
+  margin: 10px 20px;
+}
+.circle:after {
+  width: 24px;
+  height: 4px;
+  background-color: #E91E63;
+  content: "";
+  left: 50%;
+  top: 50%;
+  margin-left: -12px;
+  margin-top: -2px;
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.circle:before {
+  left: 50%;
+  top: 50%;
+  margin-left: -12px;
+  margin-top: -2px;
+  width: 24px;
+  height: 4px;
+  background-color: #E91E63;
+  content: "";
+  position: absolute;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/*http://codepen.io/jenniferlouie/pen/vEVMwe*/
+
+div.checkbox.switcher label, div.radio.switcher label {
+  padding: 0;
+}
+div.checkbox.switcher label *, div.radio.switcher label * {
+  vertical-align: middle;
+}
+div.checkbox.switcher label input, div.radio.switcher label input {
+  display: none;
+}
+div.checkbox.switcher label input + span, div.radio.switcher label input + span {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  width: 56px;
+  height: 28px;
+  background: #f2f2f2;
+  border: 1px solid #eee;
+  border-radius: 50px;
+  transition: all 0.3s ease-in-out;
+}
+
+div.checkbox.switcher label input + span small, div.radio.switcher label input + span small {
+  position: absolute;
+  display: block;
+  width: 50%;
+  height: 100%;
+  background: #fff;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+  left: 0;
+}
+
+div.checkbox.switcher label input:checked + span, div.radio.switcher label input:checked + span {
+  background: #7550ba;
+  border-color: #7550ba;
+}
+
+div.checkbox.switcher label input:checked + span small, div.radio.switcher label input:checked + span small {
+  left: 50%;
+}
+

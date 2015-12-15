@@ -15,7 +15,8 @@
     {
       "run_at": "document_idle",
       "matches": ["http://localhost:8000/", "http://www.twitch.tv/*"],
-      "js": ["js/cs-bundle.js"]
+      "js": ["js/cs-bundle.js"],
+      "css": ["cs-style.css"]
     }
   ],
   "background": {

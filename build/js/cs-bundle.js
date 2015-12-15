@@ -11756,21 +11756,44 @@ var STYLE_TEXT = 'text-overflow: ellipsis; overflow: hidden; white-space: nowrap
 
 var dropMenu = _vue2['default'].extend({
 
-  template: '<div class="js-chat-settings chat-settings chat-menu dropMenu"\n       style="background: white; bottom: 120px; border: 1px solid black;z-index: 60000; overflow-y: scroll;padding: 5px;"\n    :style="styleObject" :class="classObject">\n        <textarea style="width: 100%;" placeholder="spam here"\n          v-model="newSpam" @keyup.enter="addSpam">\n        </textarea>\n        <h3>Spams</h3>\n        <button @click="toggleFullWidth">Toggle</button>\n        <div v-for="spam in spams" track-by="$index">\n          <div title={{spam.text}} :style="styleText" @click="send(spam.id)">\n            {{spam.text}}\n          </div>\n          <div @click="remove(spam.id)">X</div>\n        </div>\n      </div>',
+  template: '<div class="js-chat-settings chat-settings chat-menu dropMenu"\n    :style="styleObject" :class="classObject">\n        <h3>Twich TV Spamerino</h3>\n        <textarea class="chat_text_input mousetrap ember-view ember-text-area"\n          :style="styleTextarea" placeholder="place your copy-pastas here"\n          v-model="newSpam">\n        </textarea>\n        <button class="button primary" @click="addSpam">Add</button>\n        <button class="button primary" @click="clear">Clear</button>\n        <h4 style="margin-top: 5px; text-align: center;">Copy pastas</h4>\n        <div style="margin: 5px 0;" class="checkbox switcher">\n          <label for="test">\n            <input @click="toggleFullWidth" type="checkbox" id="test" v-model="checked">\n            <span><small></small></span>\n            <small style="font-size: 15px;">Wrap</small>\n          </label>\n        </div>\n        <div v-for="spam in spams" track-by="$index">\n          <div :style="blockSpam">\n            <div title={{spam.text}} :style="styleText" @click="send(spam.id)">\n              {{spam.text}}\n            </div>\n            <button class="circle" @click="remove(spam.id)">X</button>\n          </div>\n        </div>\n      </div>',
 
   data: function data() {
     return {
       spams: [],
       newSpam: '',
-      classObject: {
-        'hidden': true
-      },
       styleText: STYLE_TEXT,
       styleObject: {
         width: '300px',
-        top: '-400px'
+        top: '-400px',
+        background: 'white',
+        bottom: '120px',
+        border: '1px solid rgba(0,0,0,.2)',
+        'z-index': 600000,
+        'overflow-y': 'auto',
+        'padding': '10px',
+        color: 'black'
       },
-      inputChat: document.querySelector('.chat_text_input')
+      styleTextarea: {
+        'margin-bottom': '5px',
+        width: '100%',
+        color: '#000',
+        border: '1px solid rgba(255,255,255,.1)',
+        'background-color': 'rgba(0,0,0,.1)',
+        'background-clip': 'padding-box'
+      },
+      blockSpam: {
+        cursor: 'pointer',
+        position: 'relative',
+        border: '1px solid rgba(0, 0, 0, .3)',
+        margin: '20px 0px',
+        padding: '5px'
+      },
+      inputChat: document.querySelector('.chat_text_input'),
+      checked: true,
+      classObject: {
+        hidden: true
+      }
     };
   },
 
@@ -11787,8 +11810,12 @@ var dropMenu = _vue2['default'].extend({
     },
 
     addSpam: function addSpam() {
-      console.log(this.newSpam);
+      if (!this.newSpam.length) return;
       _helpersSpamStorage2['default'].add(this.newSpam).then(this.syncList);
+      this.newSpam = '';
+    },
+
+    clear: function clear() {
       this.newSpam = '';
     },
 
@@ -11805,13 +11832,17 @@ var dropMenu = _vue2['default'].extend({
     },
 
     toggleFullWidth: function toggleFullWidth() {
-      this.styleText = this.styleText.length > 0 ? '' : STYLE_TEXT;
+      this.checked = !this.checked;
+      this.styleText = this.styleText === STYLE_TEXT ? 'overflow-wrap: break-word;' : STYLE_TEXT;
     },
 
     toggle: function toggle() {
       var heightClass = '.scroll.chat-messages.js-chat-messages.hideTimestamps.hideModIcons';
-      this.styleObject.width = document.querySelector('.chat-buttons-container').clientWidth;
-      this.styleObject.top = '-' + (Number(document.querySelector(heightClass).clientHeight) - 20) + 'px';
+      var width = document.querySelector('.chat-buttons-container').clientWidth;
+      this.styleObject.width = Number(width) - 10 + 'px';
+
+      var height = document.querySelector(heightClass).clientHeight;
+      this.styleObject.top = '-' + (Number(height) - 20) + 'px';
       this.classObject.hidden = !this.classObject.hidden;
     }
 

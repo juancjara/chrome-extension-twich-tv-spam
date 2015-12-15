@@ -8,18 +8,29 @@ let dropMenu = Vue.extend({
 
   template:
   `<div class="js-chat-settings chat-settings chat-menu dropMenu"
-       style="background: white; bottom: 120px; border: 1px solid black;z-index: 60000; overflow-y: scroll;padding: 5px;"
     :style="styleObject" :class="classObject">
-        <textarea style="width: 100%;" placeholder="spam here"
-          v-model="newSpam" @keyup.enter="addSpam">
+        <h3>Twich TV Spamerino</h3>
+        <textarea class="chat_text_input mousetrap ember-view ember-text-area"
+          :style="styleTextarea" placeholder="place your copy-pastas here"
+          v-model="newSpam">
         </textarea>
-        <h3>Spams</h3>
-        <button @click="toggleFullWidth">Toggle</button>
+        <button class="button primary" @click="addSpam">Add</button>
+        <button class="button primary" @click="clear">Clear</button>
+        <h4 style="margin-top: 5px; text-align: center;">Copy pastas</h4>
+        <div style="margin: 5px 0;" class="checkbox switcher">
+          <label for="test">
+            <input @click="toggleFullWidth" type="checkbox" id="test" v-model="checked">
+            <span><small></small></span>
+            <small style="font-size: 15px;">Wrap</small>
+          </label>
+        </div>
         <div v-for="spam in spams" track-by="$index">
-          <div title={{spam.text}} :style="styleText" @click="send(spam.id)">
-            {{spam.text}}
+          <div :style="blockSpam">
+            <div title={{spam.text}} :style="styleText" @click="send(spam.id)">
+              {{spam.text}}
+            </div>
+            <button class="circle" @click="remove(spam.id)">X</button>
           </div>
-          <div @click="remove(spam.id)">X</div>
         </div>
       </div>`,
 
@@ -27,15 +38,38 @@ let dropMenu = Vue.extend({
     return {
       spams: [],
       newSpam: '',
-      classObject: {
-        'hidden': true
-      },
       styleText: STYLE_TEXT,
       styleObject: {
         width: '300px',
-        top: '-400px'
+        top: '-400px',
+        background: 'white',
+        bottom: '120px',
+        border: '1px solid rgba(0,0,0,.2)',
+        'z-index': 600000,
+        'overflow-y': 'auto',
+        'padding': '10px',
+        color: 'black'
       },
-      inputChat: document.querySelector('.chat_text_input')
+      styleTextarea: {
+        'margin-bottom': '5px',
+        width: '100%',
+        color: '#000',
+        border: '1px solid rgba(255,255,255,.1)',
+        'background-color': 'rgba(0,0,0,.1)',
+        'background-clip': 'padding-box'
+      },
+      blockSpam: {
+        cursor: 'pointer',
+        position: 'relative',
+        border: '1px solid rgba(0, 0, 0, .3)',
+        margin: '20px 0px',
+        padding: '5px'
+      },
+      inputChat: document.querySelector('.chat_text_input'),
+      checked: true,
+      classObject: {
+        hidden: true
+      }
     };
   },
 
@@ -51,8 +85,12 @@ let dropMenu = Vue.extend({
     },
 
     addSpam() {
-      console.log(this.newSpam);
+      if (!this.newSpam.length) return;
       SpamStorage.add(this.newSpam).then(this.syncList);
+      this.newSpam = '';
+    },
+
+    clear() {
       this.newSpam = '';
     },
 
@@ -65,14 +103,19 @@ let dropMenu = Vue.extend({
     },
 
     toggleFullWidth() {
-      this.styleText = this.styleText.length > 0 ? '': STYLE_TEXT;
+      this.checked = !this.checked;
+      this.styleText = this.styleText === STYLE_TEXT ?
+        'overflow-wrap: break-word;': STYLE_TEXT;
     },
 
     toggle() {
       let heightClass = '.scroll.chat-messages.js-chat-messages.hideTimestamps.hideModIcons';
-      this.styleObject.width = document.querySelector('.chat-buttons-container')
-        .clientWidth;
-      this.styleObject.top = '-' + (Number(document.querySelector(heightClass).clientHeight) - 20)
+      let width = document.querySelector('.chat-buttons-container')
+            .clientWidth;
+      this.styleObject.width = Number(width) - 10 + 'px' ;
+
+      let height = document.querySelector(heightClass).clientHeight;
+      this.styleObject.top = '-' + (Number(height) - 20)
         + 'px';
       this.classObject.hidden = !this.classObject.hidden;
     }
