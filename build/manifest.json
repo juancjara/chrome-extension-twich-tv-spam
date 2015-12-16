@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "twitch tv spam",
   "description": "twich tv save spamerino",
-  "version": "0.1",
+  "version": "0.2",
   "icons": {
     "16": "images/kappa16.png",
     "128": "images/kappa128.png"
