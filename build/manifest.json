@@ -1,21 +1,21 @@
 {
   "manifest_version": 2,
   "name": "twitch tv spam",
-  "description": "twich tv save spam",
-  "version": "1.0",
+  "description": "twich tv save spamerino",
+  "version": "0.1",
   "icons": {
-    "16": "images/kappa16.png"
+    "16": "images/kappa16.png",
+    "128": "images/kappa128.png"
   },
   "permissions": [
     "storage",
     "notifications",
-    "alarms",
-    "contextMenus"
+    "alarms"
   ],
   "content_scripts": [
     {
       "run_at": "document_idle",
-      "matches": ["http://localhost:8000/", "http://www.twitch.tv/*"],
+      "matches": ["http://www.twitch.tv/*"],
       "js": ["js/cs-bundle.js"],
       "css": ["cs-style.css"]
     }

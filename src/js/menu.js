@@ -109,7 +109,7 @@ let dropMenu = Vue.extend({
     },
 
     toggle() {
-      let heightClass = '.scroll.chat-messages.js-chat-messages.hideTimestamps.hideModIcons';
+      let heightClass = '.scroll.chat-messages.js-chat-messages';
       let width = document.querySelector('.chat-buttons-container')
             .clientWidth;
       this.styleObject.width = Number(width) - 10 + 'px' ;
