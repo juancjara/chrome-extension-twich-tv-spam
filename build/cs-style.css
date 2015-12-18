@@ -1,3 +1,4 @@
+
 .circle {
   zoom: 0.5;
   width: 40px;
@@ -83,3 +84,6 @@ div.checkbox.switcher label input:checked + span small, div.radio.switcher label
   left: 50%;
 }
 
+#spamMenu .bttvChatSettings {
+  display: none;
+}

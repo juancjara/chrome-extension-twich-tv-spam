@@ -47,13 +47,12 @@ let dropMenu = Vue.extend({
         border: '1px solid rgba(0,0,0,.2)',
         'z-index': 600000,
         'overflow-y': 'auto',
-        'padding': '10px',
+        padding: '10px',
         color: 'black'
       },
       styleTextarea: {
         'margin-bottom': '5px',
         width: '100%',
-        color: '#000',
         border: '1px solid rgba(255,255,255,.1)',
         'background-color': 'rgba(0,0,0,.1)',
         'background-clip': 'padding-box'
@@ -115,6 +114,7 @@ let dropMenu = Vue.extend({
       this.styleObject.width = Number(width) - 10 + 'px' ;
 
       let height = document.querySelector(heightClass).clientHeight;
+      console.log(height, 'px height');
       this.styleObject.top = '-' + (Number(height) - 20)
         + 'px';
       this.classObject.hidden = !this.classObject.hidden;
