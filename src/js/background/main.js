@@ -1,4 +1,4 @@
-console.log('background script ready!!');
+console.log('background script ready!');
 
 //fix selection doesn't get twitch emoticons
 

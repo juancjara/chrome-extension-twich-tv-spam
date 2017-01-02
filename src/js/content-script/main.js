@@ -1,8 +1,7 @@
-console.log('content script ready');
 import createComponent from '../menu';
 
-let createElement = (tagName, attrs = {}) => {
-  let el= document.createElement(tagName);
+const createElement = (tagName, attrs = {}) => {
+  const el = document.createElement(tagName);
   for (let k in attrs) {
     el[k] = attrs[k];
   }
@@ -11,12 +10,13 @@ let createElement = (tagName, attrs = {}) => {
 
 const MENU_ID = 'spamMenu';
 
-let addDropDownMenu = (parentElem) => {
-  let menu = createElement('div',
-                           {
-                             id: MENU_ID,
-                             innerHTML: '<drop-menu></drop-menu>'
-                           });
+const addDropDownMenu = parentElem => {
+  const menu = createElement(
+    'div',
+    {
+      id: MENU_ID,
+      innerHTML: '<drop-menu></drop-menu>'
+    });
   parentElem.appendChild(menu);
 };
 
@@ -29,18 +29,22 @@ let toggleMenu = () => {
 };
 
 let addSpamButton = (chatButtons) => {
-  return createElement('a',
-                       {className: chatButtons.children[0].className,
-                        title: 'Let the spam begin',
-                        innerText: 'Spam'});
-  //spamButtom.onclick = toggleMenu;
-  // chatButtons.appendChild(spamButtom);
+  return createElement(
+    'button',
+    {
+      className: [...chatButtons.children].slice(-1)[0].className + ' float-left',
+      id: 'spam-buttom',
+      title: 'Let the spam begin',
+      innerText: 'Spam'
+    }
+  );
 };
 
-let onDomReady = (chatButtons) => {
+let onDomReady = chatButtons => {
   addDropDownMenu(chatButtons.parentElement);
   let button = addSpamButton(chatButtons);
   chatButtons.appendChild(button);
+
   createComponent(MENU_ID, button);
 };
 
@@ -51,4 +55,3 @@ let waitChatLoad = setInterval(() => {
     onDomReady(chatButtons);
   }
 }, 100);
-

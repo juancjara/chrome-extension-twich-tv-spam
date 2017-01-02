@@ -7,7 +7,7 @@
     "w-background": "watchify src/js/background/main.js -o build/js/bg-bundle.js",
     "w-content-script": "watchify src/js/content-script/main.js -o build/js/cs-bundle.js",
     "watch": "npm run w-content-script & npm run w-background",
-    "build": "",
+    "build": "sh build.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,11 +27,15 @@
     "babelify": "^6.3.0",
     "lodash": "^3.10.1",
     "q": "^1.4.1",
+    "uglifyjs": "^2.4.10",
     "vue": "^1.0.11"
   },
   "browserify": {
     "transform": [
       "babelify"
     ]
+  },
+  "devDependencies": {
+    "watchify": "^3.8.0"
   }
 }

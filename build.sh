@@ -6,6 +6,6 @@ NODE_ENV=production browserify -e src/js/background/main.js | uglifyjs -c -m > b
 NODE_ENV=production browserify -e src/js/content-script/main.js | uglifyjs -c -m > build/js/cs-bundle.js
 
 cd build/
-rm app.zip
+rm -f app.zip
 zip -r app.zip .
 mv app.zip ../
