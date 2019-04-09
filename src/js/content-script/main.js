@@ -11,47 +11,42 @@ const createElement = (tagName, attrs = {}) => {
 const MENU_ID = 'spamMenu';
 
 const addDropDownMenu = parentElem => {
-  const menu = createElement(
-    'div',
-    {
-      id: MENU_ID,
-      innerHTML: '<drop-menu></drop-menu>'
-    });
+  const menu = createElement('div', {
+    id: MENU_ID,
+    innerHTML: '<drop-menu></drop-menu>'
+  });
+  menu.style.position = 'relative';
   parentElem.appendChild(menu);
 };
 
-let toggleMenu = () => {
-  let menu = document.getElementById(MENU_ID);
-  let classList = [...menu.classList];
-  classList[classList.length - 1] = classList[classList.length - 1] === 'hidden'?
-                                    'rofl': 'hidden';
-  menu.className = classList.join(' ');
+let addSpamButton = chatButton => {
+  const newButton = chatButton.cloneNode(true);
+  newButton.innerText = 'Spam';
+  newButton.title = 'Let the spam begin';
+  newButton.id = 'spam-buttom';
+
+  return newButton;
 };
 
-let addSpamButton = (chatButtons) => {
-  return createElement(
-    'button',
-    {
-      className: [...chatButtons.children].slice(-1)[0].className + ' float-left',
-      id: 'spam-buttom',
-      title: 'Let the spam begin',
-      innerText: 'Spam'
-    }
-  );
+let onDomReady = buttonChat => {
+  let newButton = addSpamButton(buttonChat);
+  addDropDownMenu(buttonChat.parentElement);
+  buttonChat.parentElement.prepend(newButton);
+  createComponent(MENU_ID, newButton);
 };
 
-let onDomReady = chatButtons => {
-  addDropDownMenu(chatButtons.parentElement);
-  let button = addSpamButton(chatButtons);
-  chatButtons.appendChild(button);
+const getElementByXPath = xpath =>
+  new XPathEvaluator()
+    .createExpression(xpath)
+    .evaluate(document, XPathResult.FIRST_ORDERED_NODE_TYPE).singleNodeValue;
 
-  createComponent(MENU_ID, button);
-};
+const xpath = '//button//*[text()="Chat"]';
 
 let waitChatLoad = setInterval(() => {
-  let chatButtons = document.querySelector('.chat-buttons-container');
-  if (chatButtons) {
+  let nodeChat = getElementByXPath(xpath);
+  if (nodeChat) {
     clearInterval(waitChatLoad);
-    onDomReady(chatButtons);
+    let buttonChat = nodeChat.closest('button');
+    onDomReady(buttonChat);
   }
 }, 100);
